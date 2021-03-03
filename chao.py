@@ -29,5 +29,6 @@ client.load_extension('cogs.Init')      # Bot initialization commands
 client.load_extension('cogs.Admin')
 client.load_extension('cogs.Begin')     # New player command
 client.load_extension('cogs.Sandbox')
+client.load_extension('cogs.Events')
 
 client.run(os.getenv('BOT_TOKEN'))

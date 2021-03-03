@@ -1,10 +1,10 @@
 import discord
 from discord.ext import commands
+from cogs import Events
+from discord.utils import get
 import os
 import time
 import json
-
-
 
 
 class Begin(commands.Cog):
@@ -27,9 +27,14 @@ class Begin(commands.Cog):
                 new_account = json.load(f)
             with open(directory, 'w') as f:
                 json.dump(new_account, f)
-
+            event = self.bot.get_cog('Events')
+            if event is not None:
+                await event.embed_chao(ctx)
         else:
-            await ctx.send('ERROR: You already have a chao!')
+            await ctx.send('ERROR: You already have a chao! Please use the **!hatch** command instead. '
+                           + ctx.author.mention)
+
+
 
 
 def setup(bot):
