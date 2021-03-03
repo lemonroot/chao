@@ -1,14 +1,9 @@
 {
-  'name': 'none',
-  'age': 'egg',
-  'evo': '0',
-  'color': 'Normal',
-  'sh': 'n',
-  'tt': 'y',
-  'lvl': 1,
-  'swim': 0,
-  'fly': 0,
-  'run': 0,
-  'pow': 0,
-  'sta': 0
+  "name": "none",
+  "age": "egg",
+  "evo": 0,
+  "align": 0.0,
+  "color": "Normal",
+  "sh": "n",
+  "tt": "y"
 }
