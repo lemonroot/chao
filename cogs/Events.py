@@ -7,16 +7,16 @@ import json
 
 
 class Events(commands.Cog):
-    async def embed_chao(self, ctx):
+    async def embed_chao(self, ctx, egg, val, img):
         embed = discord.Embed(
             title='Event',
             description=(ctx.author.mention + ' found a chao egg!'),
-            colour=discord.Colour.blue()
+            color=ctx.author.color
         )
 
-        embed.set_image(url='https://i.imgur.com/AQmDl2s.png')
-        embed.add_field(name='Color', value='Normal', inline='True')
-        embed.add_field(name='Value', value='0 rings', inline='True')
+        embed.set_image(url=img)
+        embed.add_field(name='Color', value=egg, inline='True')
+        embed.add_field(name='Value', value=val, inline='True')
         embed.set_footer(text='Hint: Use !hatch to hatch the egg!')
 
         await ctx.send(embed=embed)

@@ -27,14 +27,18 @@ class Begin(commands.Cog):
                 new_account = json.load(f)
             with open(directory, 'w') as f:
                 json.dump(new_account, f)
+            with open('data/dummyinfo.json', 'r') as f:
+                new_info = json.load(f)
+            directory = ('profiles/' + str(ctx.author.id) + '/info.json')
+            with open(directory, 'w') as f:
+                new_info["ID"] = ctx.author.id
+                json.dump(new_info, f)
             event = self.bot.get_cog('Events')
             if event is not None:
-                await event.embed_chao(ctx)
+                await event.embed_chao(ctx, 'Normal', '0 rings', 'https://i.imgur.com/AQmDl2s.png')
         else:
-            await ctx.send('ERROR: You already have a chao! Please use the **!hatch** command instead. '
+            await ctx.send('ERROR: You already have a chao! Please use the **!hatch normal** command instead. '
                            + ctx.author.mention)
-
-
 
 
 def setup(bot):
