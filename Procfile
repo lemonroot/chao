@@ -1,1 +1,1 @@
-worker: python bot/chao.py
+worker: python chao.py
