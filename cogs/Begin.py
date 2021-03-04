@@ -26,7 +26,7 @@ class Begin(commands.Cog):
             post = {"_id": ctx.author.id, "rings": 50}
             users.insert_one(post)
 
-            for d in items.findOne({"_id": 1}):
+            for d in items.find_one({"_id": 1}):
                 name = d["name"]
                 await ctx.send(name)
             # post = {"_id": ctx.author.id, "name": egg}
