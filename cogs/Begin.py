@@ -9,8 +9,9 @@ import asyncpg
 import json
 import pymongo
 from pymongo import MongoClient
+import urllib.parse
 
-mongo_url = "mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/test"
+mongo_url = "mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 cluster = MongoClient(mongo_url)
 db = cluster["ChaoBot"]
 dbusers = db["users"]
