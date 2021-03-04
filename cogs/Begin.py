@@ -14,6 +14,7 @@ cluster = MongoClient("mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jf
 db = cluster["Chao"]
 dbusers = db["users"]
 
+
 class Begin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -28,7 +29,7 @@ class Begin(commands.Cog):
 
         id = ctx.author.id
         post = {"_id": ctx.author.id, "rings": 50}
-        self.bot.dbusers.insert_one(post)
+        self.dbusers.insert_one(post)
         await ctx.send('Added user! Test test test lol')
 
 """
