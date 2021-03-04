@@ -27,7 +27,7 @@ class Begin(commands.Cog):
 
         connect = self.bot.get_cog('Init')
         myquery = {"_id": ctx.author.id }
-        if(connect.count_documents(myquery) == 0):
+        if(connect.dbusers.count_documents(myquery) == 0):
             post = {"_id": ctx.author.id, "rings": 50}
             connect.dbusers.insert_one(post)
 
@@ -35,7 +35,8 @@ class Begin(commands.Cog):
             if event is not None:
                 await event.embed_chao(ctx, 'Normal', '0 rings', 'https://i.imgur.com/AQmDl2s.png')
         else:
-            await ctx.send('ERROR: You already have a chao! Please use the **!hatch normal** command instead. '
+            await ctx.send('ERROR: You already have a chao! Please use the **!hatch normal** command instead, '
+                           'or use **!help hatch** for more info. '
                            + ctx.author.mention)
 
 """
