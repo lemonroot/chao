@@ -22,7 +22,7 @@ class Begin(commands.Cog):
         id = ctx.author.id
         db = sqlite3.connect('data/main.sqlite')
         cursor = db.cursor()
-        cursor.execute('SELECT id FROM users WHERE id = %(id)s', (id))
+        cursor.execute('SELECT id FROM users WHERE id = %(id)s', (id,))
         checkID = cursor.fetchone()
         if checkID != 0:
             ctx.send("Unregistered.")
