@@ -9,6 +9,7 @@ import asyncpg
 import json
 import pymongo
 from pymongo import MongoClient
+from Init import db
 
 
 class Begin(commands.Cog):
@@ -24,8 +25,8 @@ class Begin(commands.Cog):
             return
 
 
-        connect = self.bot.get_cog('Init')
-        users = connect.db["users"]
+        # connect = self.bot.get_cog('Init')
+        users = db["users"]
 
         myquery = {"_id": ctx.author.id }
         search = users.count_documents(myquery)
