@@ -3,6 +3,11 @@ from discord.ext import commands
 import pymongo
 from pymongo import MongoClient
 
+mongo_url = "mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+cluster = MongoClient(mongo_url)
+db = cluster["ChaoBot"]
+dbusers = db["users"]
+
 
 class Init(commands.Cog):
     def __init__(self, bot):
@@ -11,10 +16,6 @@ class Init(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        mongo_url = "mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-        cluster = MongoClient(mongo_url)
-        db = cluster["ChaoBot"]
-        dbusers = db["users"]
         game = discord.Game('with chao!')
         await self.bot.change_presence(status=discord.Status.online, activity=game)
 

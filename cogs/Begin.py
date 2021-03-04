@@ -25,7 +25,7 @@ class Begin(commands.Cog):
 
 
         connect = self.bot.get_cog('Init')
-        users = connect.on_ready.db["users"]
+        users = connect.db["users"]
 
         myquery = {"_id": ctx.author.id }
         search = users.count_documents(myquery)
