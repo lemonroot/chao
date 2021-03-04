@@ -28,13 +28,14 @@ class Begin(commands.Cog):
 
             # Find item in items table
             egg = items.find_one({"_id": 1})
+            id = egg.get('_id')
             name = egg.get('name')
             color = egg.get('color')
             val = egg.get('val')
             img = egg.get('img')
 
             # Insert egg into inventory
-            post = {"_id": ctx.author.id, "name": name, "quantity": 1}
+            post = {"user id": ctx.author.id, "item id": id, "name": name, "quantity": 1}
             inv.insert_one(post)
 
             event = self.bot.get_cog('Events')
