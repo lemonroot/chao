@@ -9,7 +9,6 @@ import asyncpg
 import json
 import pymongo
 from pymongo import MongoClient
-import urllib.parse
 
 
 class Begin(commands.Cog):
@@ -37,7 +36,7 @@ class Begin(commands.Cog):
             event = self.bot.get_cog('Events')
             if event is not None:
                 await event.embed_chao(ctx, 'Normal', '0 rings', 'https://i.imgur.com/AQmDl2s.png')
-        else
+        else:
             await ctx.send('ERROR: You already have a chao! Please use the **!hatch normal** command instead, '
                            'or use **!help hatch** for more info. '
                            + ctx.author.mention)
