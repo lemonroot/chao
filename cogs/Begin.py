@@ -26,9 +26,8 @@ class Begin(commands.Cog):
             post = {"_id": ctx.author.id, "rings": 50}
             users.insert_one(post)
 
-            #egg = items.find({"_id": 1, "name": "normal egg"})
-            # await ctx.send(str(egg["name"]))
-            # post = {"_id": ctx.author.id, "name": egg}
+            egg = items.find_one({"_id": 1})
+            await ctx.send(egg)
 
             event = self.bot.get_cog('Events')
             if event is not None:
