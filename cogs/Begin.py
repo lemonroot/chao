@@ -11,11 +11,6 @@ import pymongo
 from pymongo import MongoClient
 import urllib.parse
 
-mongo_url = "mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-cluster = MongoClient(mongo_url)
-db = cluster["ChaoBot"]
-dbusers = db["users"]
-
 
 class Begin(commands.Cog):
     def __init__(self, bot):
@@ -29,9 +24,9 @@ class Begin(commands.Cog):
         if member == self.bot.user:
             return
 
-        id = ctx.author.id
         post = {"_id": ctx.author.id, "rings": 50}
-        dbusers.insert_one(post)
+        connect = self.bot.get_cog('Init')
+        connect.dbusers.insert_one(post)
         await ctx.send('Added user! Test test test lol')
 
 """
