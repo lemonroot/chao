@@ -29,7 +29,7 @@ class Begin(commands.Cog):
 
         id = ctx.author.id
         post = {"_id": ctx.author.id, "rings": 50}
-        self.dbusers.insert_one(post)
+        dbusers.insert_one(post)
         await ctx.send('Added user! Test test test lol')
 
 """
