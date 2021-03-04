@@ -24,10 +24,19 @@ class Begin(commands.Cog):
         if member == self.bot.user:
             return
 
-        post = {"_id": ctx.author.id, "rings": 50}
+
         connect = self.bot.get_cog('Init')
-        connect.dbusers.insert_one(post)
-        await ctx.send('Added user! Test test test lol')
+        myquery = {"_id": ctx.author.id }
+        if(connect.count_documents(myquery) == 0):
+            post = {"_id": ctx.author.id, "rings": 50}
+            connect.dbusers.insert_one(post)
+
+            event = self.bot.get_cog('Events')
+            if event is not None:
+                await event.embed_chao(ctx, 'Normal', '0 rings', 'https://i.imgur.com/AQmDl2s.png')
+        else:
+            await ctx.send('ERROR: You already have a chao! Please use the **!hatch normal** command instead. '
+                           + ctx.author.mention)
 
 """
         if not os.path.exists('profiles/{}'.format(ctx.author.id)):
