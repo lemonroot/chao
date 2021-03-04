@@ -10,9 +10,9 @@ import json
 import pymongo
 from pymongo import MongoClient
 
-mongo_url = "mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+mongo_url = "mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/test"
 cluster = MongoClient(mongo_url)
-db = cluster["Chao"]
+db = cluster["ChaoBot"]
 dbusers = db["users"]
 
 
