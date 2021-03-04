@@ -3,7 +3,7 @@ from discord.ext import commands
 from cogs import Events
 from discord.utils import get
 import os
-import time
+import sqlite3
 import json
 
 
@@ -19,6 +19,16 @@ class Begin(commands.Cog):
         if member == self.bot.user:
             return
 
+        id = ctx.author.id
+        db = sqlite3.connect('data/main.sqlite')
+        cursor = db.cursor()
+        cursor.execute('SELECT id FROM users WHERE id = %(id)s', (id))
+        checkID = cursor.fetchone()
+        if checkID != 0:
+            ctx.send("Unregistered.")
+        else:
+            ctx.send("You exist in the database.")
+"""
         if not os.path.exists('profiles/{}'.format(ctx.author.id)):
             os.makedirs('profiles/{}'.format(ctx.author.id) + '/chao1')
             directory = ('profiles/' + str(ctx.author.id) + '/chao1/info.json')
@@ -39,7 +49,7 @@ class Begin(commands.Cog):
         else:
             await ctx.send('ERROR: You already have a chao! Please use the **!hatch normal** command instead. '
                            + ctx.author.mention)
-
+"""
 
 def setup(bot):
     bot.add_cog(Begin(bot))
