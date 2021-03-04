@@ -7,7 +7,12 @@ import sqlite3
 import asyncio
 import asyncpg
 import json
+import pymongo
+from pymongo import MongoClient
 
+cluster = MongoClient("mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/test")
+db = cluster["Chao"]
+dbusers = db["users"]
 
 class Begin(commands.Cog):
     def __init__(self, bot):
