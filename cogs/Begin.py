@@ -27,11 +27,13 @@ class Begin(commands.Cog):
             users.insert_one(post)
 
             egg = items.find_one({"_id": 1})
-            await ctx.send(egg.get('name'))
+            name = egg.get('name')
+            val = egg.get('val')
+            img = egg.get('img')
 
             event = self.bot.get_cog('Events')
             if event is not None:
-                await event.embed_chao(ctx, items.find_one(), '0 rings', 'https://i.imgur.com/AQmDl2s.png')
+                await event.embed_chao(ctx, name, val + ' rings', img)
         else:
             await ctx.send('ERROR: You already received an egg! Please use the **!hatch normal** command instead, '
                            'or use **!help hatch** for more info. '
