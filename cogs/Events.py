@@ -10,7 +10,7 @@ class Events(commands.Cog):
     async def embed_chao(self, ctx, name, color, val, img):
         embed = discord.Embed(
             title='Event',
-            description=(ctx.author.mention + ' found a ' + name + '!'),
+            description=(ctx.author.mention + ' received **' + name + '**!'),
             color=ctx.author.color
         )
 

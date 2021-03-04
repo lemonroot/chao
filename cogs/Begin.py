@@ -22,19 +22,24 @@ class Begin(commands.Cog):
         myquery = {"_id": ctx.author.id }
         search = users.count_documents(myquery)
         if search == 0:
-            # INSERT USER IF DOESN'T EXIST
+            # Insert user into users table
             post = {"_id": ctx.author.id, "rings": 50}
             users.insert_one(post)
 
+            # Find item in items table
             egg = items.find_one({"_id": 1})
             name = egg.get('name')
             color = egg.get('color')
             val = egg.get('val')
             img = egg.get('img')
 
+            # Insert egg into inventory
+            post = {"_id": ctx.author.id, "name": name, "quantity": 1}
+            inv.insert_one(post)
+
             event = self.bot.get_cog('Events')
             if event is not None:
-                await event.embed_chao(ctx, name, color.upper(), str(val) + ' rings', img)
+                await event.embed_chao(ctx, name, color.capitalize(), str(val) + ' rings', img)
         else:
             await ctx.send('ERROR: You already received an egg! Please use the **!hatch normal** command instead, '
                            'or use **!help hatch** for more info. '
