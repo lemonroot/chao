@@ -9,7 +9,8 @@ import asyncpg
 import json
 import pymongo
 from pymongo import MongoClient
-from Init import db
+from cogs import Init
+from cogs.Init import db
 
 
 class Begin(commands.Cog):
