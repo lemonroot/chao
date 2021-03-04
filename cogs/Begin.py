@@ -4,6 +4,8 @@ from cogs import Events
 from discord.utils import get
 import os
 import sqlite3
+import asyncio
+import asyncpg
 import json
 
 

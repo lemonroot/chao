@@ -4,6 +4,7 @@ import logging
 from discord.ext import commands
 from dotenv import load_dotenv
 import sqlite3
+import asyncpg
 load_dotenv()
 
 logger = logging.getLogger('discord')
@@ -12,12 +13,15 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
+connect = open("connect.txt", "r").read()
 # COMMAND PREFIX IS !
 client = commands.Bot(command_prefix='!', help_command=None)
 
 
 @client.event
 async def on_ready():
+    credentials = {"user": "hpgqrobuxidgsv", "password": "09507475712444a61cc0d1a6d65de7a883cb77c56a51be9b964d17390d675f4b", "database": "d2ku508taerpki", "host": "ec2-50-16-108-41.compute-1.amazonaws.com"}
+    db = await asyncpg.create_pool(**credentials)
     print(f'{client.user.name} online.')
     print(f'With ID: {client.user.id}')
 
@@ -32,3 +36,4 @@ client.load_extension('cogs.Events')    # Event embeds
 client.load_extension('cogs.Help')      # Help commands
 
 client.run(os.getenv('BOT_TOKEN'))
+client.run(connect)
