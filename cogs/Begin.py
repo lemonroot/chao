@@ -22,14 +22,10 @@ class Begin(commands.Cog):
             return
 
         id = ctx.author.id
-        db = sqlite3.connect('data/main.sqlite')
-        cursor = db.cursor()
-        cursor.execute('SELECT id FROM users WHERE id = ?', (id,))
-        checkid = cursor.fetchone()
-        if checkid != 0:
-            await ctx.send("Unregistered.")
-        else:
-            await ctx.send("You exist in the database.")
+        post = {"_id": ctx.author.id, "rings": 50}
+        self.bot.dbusers.insert_one(post)
+        await ctx.send('Added user! Test test test lol')
+
 """
         if not os.path.exists('profiles/{}'.format(ctx.author.id)):
             os.makedirs('profiles/{}'.format(ctx.author.id) + '/chao1')
