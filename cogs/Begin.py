@@ -10,7 +10,7 @@ import json
 import pymongo
 from pymongo import MongoClient
 
-cluster = MongoClient("mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/test")
+cluster = MongoClient("mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = cluster["Chao"]
 dbusers = db["users"]
 
