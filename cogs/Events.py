@@ -17,7 +17,7 @@ class Events(commands.Cog):
         embed.set_image(url=img)
         embed.add_field(name='Color', value=egg, inline='True')
         embed.add_field(name='Value', value=val, inline='True')
-        embed.set_footer(text='Hint: Use !hatch *color* to hatch the egg!')
+        embed.set_footer(text='Hint: Use !hatch to hatch the egg!')
 
         await ctx.send(embed=embed)
 
