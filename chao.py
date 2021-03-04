@@ -13,9 +13,6 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
-cluster = MongoClient("mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/test")
-db = cluster["Chao"]
-dbusers = db["users"]
 # COMMAND PREFIX IS !
 client = commands.Bot(command_prefix='!', help_command=None)
 

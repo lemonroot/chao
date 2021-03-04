@@ -26,8 +26,9 @@ class Begin(commands.Cog):
             post = {"_id": ctx.author.id, "rings": 50}
             users.insert_one(post)
 
-            egg = items.find({"_id": "1"})
-            await ctx.send(egg)
+            for d in items.findOne({"_id": 1}):
+                name = d["name"]
+                await ctx.send(name)
             # post = {"_id": ctx.author.id, "name": egg}
 
             event = self.bot.get_cog('Events')
