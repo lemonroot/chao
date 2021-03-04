@@ -27,7 +27,8 @@ class Begin(commands.Cog):
 
         connect = self.bot.get_cog('Init')
         myquery = {"_id": ctx.author.id }
-        if(connect.dbusers.count_documents(myquery) == 0):
+        search = connect.dbusers.count_documents(myquery)
+        if search == 0:
             post = {"_id": ctx.author.id, "rings": 50}
             connect.dbusers.insert_one(post)
 
