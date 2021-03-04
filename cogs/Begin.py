@@ -25,9 +25,9 @@ class Begin(commands.Cog):
         cursor.execute('SELECT id FROM users WHERE id = ?', (id,))
         checkid = cursor.fetchone()
         if checkid != 0:
-            ctx.send("Unregistered.")
+            await ctx.send("Unregistered.")
         else:
-            ctx.send("You exist in the database.")
+            await ctx.send("You exist in the database.")
 """
         if not os.path.exists('profiles/{}'.format(ctx.author.id)):
             os.makedirs('profiles/{}'.format(ctx.author.id) + '/chao1')
