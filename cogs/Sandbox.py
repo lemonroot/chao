@@ -18,15 +18,11 @@ class Sandbox(commands.Cog):
         self._last_member = member
 
     @commands.command(name='eggtest')
-    async def egg_test(self, ctx, *args, member: discord.Member = None):
-        member = member or ctx.author
-
-        if member == self.bot.user:
-            return
+    async def egg_test(self, ctx, arg):
 
         items = db["items"]
 
-        egg = items.find_one({"color": args})
+        egg = items.find_one({"color": arg})
         id = egg.get('_id')
         name = egg.get('name')
         color = egg.get('color')
