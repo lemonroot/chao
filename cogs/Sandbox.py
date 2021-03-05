@@ -35,6 +35,11 @@ class Sandbox(commands.Cog):
         rarity = egg.get('rarity')
         footer = 'Hint: This is only a test!'
 
+        event = self.bot.get_cog('Events')
+        if event is not None:
+            await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received', rarity,
+                                   footer)
+
 
 def setup(bot):
     bot.add_cog(Sandbox(bot))
