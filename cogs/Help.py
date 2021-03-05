@@ -29,7 +29,7 @@ class Help(commands.Cog):
                                                        "note that you can only hatch an egg if it is **ready** to be"
                                                        " hatched.")
         em.add_field(name="**Syntax**", value="!hatch *color*")
-        em.add_field(name="**Examples**", value="!hatch red\n!hatch normal")
+        em.add_field(name="**Examples**", value="!hatch red\n!hatch normal\n!hatch shiny white")
 
         await ctx.send(embed=em)
 
