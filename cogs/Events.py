@@ -20,7 +20,7 @@ class Events(commands.Cog):
         embed.set_footer(text=footer)
 
         await ctx.send(embed=embed)
-        event = self.bot.get_cog('Events')
+        event = self
         if event is not None:
             await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received', rarity,
                                    footer)

@@ -29,9 +29,20 @@ class Help(commands.Cog):
                                                        "note that you can only hatch an egg if it is **ready** to be"
                                                        " hatched.")
         em.add_field(name="**Syntax**", value="!hatch *color*")
-        em.add_field(name="**Examples**", value="!hatch red\n!hatch normal\n!hatch shiny white")
+        em.add_field(name="**Examples**", value="!hatch red\n!hatch normal\n!hatch shinywhite")
 
         await ctx.send(embed=em)
+        em = discord.Embed(title="!eggtest", description="Use the !eggtest command to look at various egg events. "
+                                                         "The eggs currently available to test are: normal, red, blue,"
+                                                         "green, lime, cyan, purple, pink, orange, brown, yellow, black,"
+                                                         "gray, white, onyx, ruby, sapphire, garnet, aquamarine, emerald,"
+                                                         "amethyst, peridot, topaz, silver, gold, indigo, "
+                                                         "crimson, mint, and pearl.")
+        em.add_field(name="**Syntax**", value="!eggtest *color*")
+        em.add_field(name="**Examples**", value="!eggtest red\n!eggtest sapphire\n!hatch brown")
+
+    @help.command()
+    async def eggtest(self, ctx):
 
 
 def setup(bot):

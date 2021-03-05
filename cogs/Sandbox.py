@@ -23,7 +23,6 @@ class Sandbox(commands.Cog):
         items = db["items"]
 
         egg = items.find_one({"color": arg})
-        id = egg.get('_id')
         name = egg.get('name')
         color = egg.get('color')
         val = egg.get('val')
