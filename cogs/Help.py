@@ -33,13 +33,12 @@ class Help(commands.Cog):
 
         await ctx.send(embed=em)
 
-
     @help.command()
     async def eggtest(self, ctx):
         em = discord.Embed(title="!eggtest", description="Use the !eggtest command to look at various egg events. "
-                                                         "The eggs currently available to test are: normal, red, blue,"
-                                                         "green, lime, cyan, purple, pink, orange, brown, yellow, black,"
-                                                         "gray, white, onyx, ruby, sapphire, garnet, aquamarine, emerald,"
+                                                         "The eggs currently available to test are: normal, red, blue, "
+                                                         "green, lime, cyan, purple, pink, orange, brown, yellow, black, "
+                                                         "gray, white, onyx, ruby, sapphire, garnet, aquamarine, emerald, "
                                                          "amethyst, peridot, topaz, silver, gold, indigo, "
                                                          "crimson, mint, and pearl.")
         em.add_field(name="**Syntax**", value="!eggtest *color*")
