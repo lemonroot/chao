@@ -40,7 +40,7 @@ class Begin(commands.Cog):
 
             event = self.bot.get_cog('Events')
             if event is not None:
-                await event.embed_chao(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received')
+                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received')
         else:
             await ctx.send('ERROR: You already received an egg! Please use the **!hatch normal** command instead, '
                            'or use **!help hatch** for more info. '
