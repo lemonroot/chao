@@ -35,7 +35,7 @@ class Begin(commands.Cog):
             img = egg.get('img')
 
             # Insert egg into inventory
-            post = {"user id": ctx.author.id, "item id": id, "name": name, "quantity": 1}
+            post = {"_id": id, "user id": ctx.author.id, "name": name, "quantity": 1, "src": "tutorial"}
             inv.insert_one(post)
 
             event = self.bot.get_cog('Events')
