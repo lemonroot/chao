@@ -1,5 +1,10 @@
 import discord
 from discord.ext import commands
+from cogs.Init import db
+
+personality = ["gentle", "naughty", "energetic", "quiet", "big eater", "chatty", "easily bored", "curious", "carefree",
+               "smart", "cry baby", "lonely", "naive", "mysterious", "wacky", "rowdy", "tough", "bossy", "curious",
+               "nervous", "sweet", "rebellious"]
 
 
 class Basic(commands.Cog):

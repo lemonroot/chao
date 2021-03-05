@@ -33,6 +33,8 @@ class Begin(commands.Cog):
             color = egg.get('color')
             val = egg.get('val')
             img = egg.get('img')
+            rarity = egg.get('rarity')
+            footer = 'Hint: Use !hatch to hatch the egg!'
 
             # Insert egg into inventory
             post = {"_id": id, "user id": ctx.author.id, "name": name, "quantity": 1, "src": "tutorial"}
@@ -40,7 +42,7 @@ class Begin(commands.Cog):
 
             event = self.bot.get_cog('Events')
             if event is not None:
-                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received')
+                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received', rarity, footer)
         else:
             await ctx.send('ERROR: You already received an egg! Please use the **!hatch normal** command instead, '
                            'or use **!help hatch** for more info. '
