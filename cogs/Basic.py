@@ -17,18 +17,29 @@ class Basic(commands.Cog):
         if not arg:
             await ctx.send("Please provide the color of the egg! " + ctx.author.mention)
         else:
+            # Get item and inventory collections
             items = db["items"]
             inv = db["inventory"]
 
+            # Find ID for egg of given color
             egg = items.find_one({"color": arg})
             eggid = egg.get("_id")
 
+            # Search player inventory for egg
             myquery = {"userid": ctx.author.id, "itemid": eggid}
             search = inv.count_documents(myquery)
             if search == 0:
-                await ctx.send("False")
+                await ctx.send("ERROR: You do not possess any " + arg + " eggs!")
             else:
-                await ctx.send("True")
+                await ctx.send("Hatched!")
+                invinst = inv.find_one(myquery)
+                qua = invinst.get("quantity")
+                if qua == 1:
+                    # remove item from inventory
+                    inv.delete_one(invinst)
+                else:
+                    # lower quantity by 1
+                    await ctx.send("should lower quantity here " + str(invinst))
 
 
 def setup(bot):
