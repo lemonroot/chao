@@ -1,0 +1,1 @@
+mongodb+srv://lemonroot:<password>@cluster0.5jfol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority

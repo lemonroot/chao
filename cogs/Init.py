@@ -1,5 +1,11 @@
 import discord
 from discord.ext import commands
+import pymongo
+from pymongo import MongoClient
+
+mongo_url = "mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+cluster = MongoClient(mongo_url)
+db = cluster["ChaoBot"]
 
 
 class Init(commands.Cog):

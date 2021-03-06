@@ -3,9 +3,8 @@ import os
 import logging
 from discord.ext import commands
 from dotenv import load_dotenv
-from string import ascii_letters, digits
-import time
-import json
+import pymongo
+from pymongo import MongoClient
 load_dotenv()
 
 logger = logging.getLogger('discord')
