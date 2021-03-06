@@ -18,9 +18,17 @@ class Basic(commands.Cog):
             await ctx.send("Please provide the color of the egg! " + ctx.author.mention)
         else:
             items = db["items"]
-            inv = db["inv"]
-            check = inv.find_one({"color": arg})
-            await ctx.send(arg + 'works')
+            inv = db["inventory"]
+
+            egg = items.find_one({"color": arg})
+            eggid = egg.get("_id")
+
+            myquery = {"userid": ctx.author.id, "itemid": eggid}
+            search = inv.count_documents(myquery)
+            if search == 0:
+                await ctx.send("False")
+            else:
+                await ctx.send("True")
 
 
 def setup(bot):
