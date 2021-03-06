@@ -1,11 +1,22 @@
 import discord
 from discord.ext import commands
-
+import random
 
 class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
+
+    @commands.command(name="hint")
+    async def hint(self, ctx, *, member: discord.Member = None):
+        member = member or ctx.author
+        with open('data/hints.txt', 'r') as f:
+            read = f.read()
+            array = read.split('\n')
+            quote = random.choice(array)
+        em = discord.Embed(title="Hint", description=quote, color=ctx.author.color)
+
+        await member.send(embed=em)
 
     @commands.group(invoke_without_command=True)
     async def help(self, ctx):

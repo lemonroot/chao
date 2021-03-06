@@ -37,7 +37,7 @@ class Begin(commands.Cog):
             footer = 'Hint: Use !hatch to hatch the egg!'
 
             # Insert egg into inventory
-            post = {"_id": id, "user id": ctx.author.id, "name": name, "quantity": 1, "src": "tutorial"}
+            post = {"userid": ctx.author.id, "itemid": id, "name": name, "quantity": 1, "src": "tutorial"}
             inv.insert_one(post)
 
             event = self.bot.get_cog('Events')
