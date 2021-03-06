@@ -13,11 +13,14 @@ class Basic(commands.Cog):
         self._last_member = None
 
     @commands.command(name='hatch')
-    async def hatch(self, ctx, *args):
-        if not args:
+    async def hatch(self, ctx, arg):
+        if not arg:
             await ctx.send("Please provide the color of the egg! " + ctx.author.mention)
         else:
-            await ctx.send(args)
+            items = db["items"]
+            inv = db["inv"]
+            check = inv.find_one({"color": arg})
+            await ctx.send(arg + 'works')
 
 
 def setup(bot):
