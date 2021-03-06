@@ -6,3 +6,9 @@ You can increase your chao's intelligence by taking them to class!
 You can skip the fortune teller's suggested names by supplying a name after the !name command.
 I heard a rumor that a secret Chao Plaza exists with special eggs! I can't remember who told me...
 It's better to do long explorations before you go to sleep.
+I was programmed by one person. You can do it too! ... And probably better.
+Your chao's personality influences their habits!
+All chao born through breeding come from normal eggs and hatch quickly.
+Chao bought from the Black Market tend to have average stat grades.
+You can increase a chao's stat grades through reincarnation.
+you can speed up a chao's lifecycle with dried fruit, but be careful! They'll need more attention than normal to stay happy.
