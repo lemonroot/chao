@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from cogs.Init import db
 from datetime import datetime
+import random
 
 personality = ["gentle", "naughty", "energetic", "quiet", "big eater", "chatty", "easily bored", "curious", "carefree",
                "smart", "cry baby", "lonely", "naive", "mysterious", "wacky", "rowdy", "tough", "bossy", "curious",
@@ -48,10 +49,22 @@ class Basic(commands.Cog):
                     if src == "tutorial":
                         event = self.bot.get_cog('Events')
                         if event is not None:
-                            await ctx.send("Tutorial egg detected")
                             await event.tut2_embed(ctx)
+                    await self._create_chao(ctx, arg)
                 else:
                     await ctx.send("ERROR: This egg isn't ready to hatch! It needs a bit longer...")
+
+    async def _create_chao(self, ctx, color):
+        with open('data/personalities.txt', 'r') as f:
+            read = f.read()
+            array = read.split('\n')
+            person = random.choice(array)
+        chao = db["chao"]
+        post = {"userid": ctx.author.id, "name": "Chao", "looks": [color, False, True], "data": [0, 0, 0, 5, 0],
+                "grades": ["C", "C", "C", "C", "C", "C"], "stats": [1, 1, 1, 1, 1, 1],
+                "personality": person, "birthday": datetime.now()}
+        chao.insert_one(post)
+
 
 
 def setup(bot):

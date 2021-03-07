@@ -13,9 +13,8 @@ class Events(commands.Cog):
         embed = discord.Embed(
             title='Event',
             description=(ctx.author.mention + ' ' + src + ' ' + str(qua) + ' **' + name + '**!'),
-            color=ctx.author.color
+            color=ctx.author.color,
         )
-
         embed.set_image(url=img)
         if color != 'null':
             embed.add_field(name='Color', value=color, inline='True')
@@ -58,6 +57,21 @@ class Events(commands.Cog):
         embed.add_field(name="Examples", value="!name\n!name ChaoBot", inline="False")
 
         await ctx.send(embed=embed)
+
+    async def embed_NPC(self, ctx, npc, text, img, footer, steps, member: discord.Member = None):
+        member = member or ctx.author
+        bot = self.bot.user
+        embed = discord.Embed(
+            title=npc,
+            description=text,
+            color=ctx.author.color,
+        )
+        embed.set_image(url=img)
+        embed.add_field(name='Instructions', value=steps, inline='True')
+        embed.set_footer(text=footer)
+
+        await ctx.send(embed=embed)
+
 
 
 def setup(bot):
