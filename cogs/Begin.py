@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from cogs.Init import db
+from datetime import datetime, timedelta
 
 
 class Begin(commands.Cog):
@@ -37,12 +38,14 @@ class Begin(commands.Cog):
             footer = 'Hint: Use !hatch to hatch the egg!'
 
             # Insert egg into inventory
-            post = {"userid": ctx.author.id, "itemid": id, "name": name, "quantity": 1, "src": "tutorial"}
+            # hourtest = datetime.now() + timedelta(hours=1)
+            post = {"userid": ctx.author.id, "itemid": id, "name": name, "quantity": 1, "src": "tutorial", "time": datetime.now(), "hatch": datetime.now()}
             inv.insert_one(post)
 
             event = self.bot.get_cog('Events')
             if event is not None:
                 await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received', rarity, footer)
+                await event.tut1_embed(ctx)
         else:
             await ctx.send('ERROR: You already received an egg! Please use the **!hatch normal** command instead, '
                            'or use **!help hatch** for more info. '

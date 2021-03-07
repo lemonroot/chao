@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from cogs.Init import db
+from datetime import datetime
 
 personality = ["gentle", "naughty", "energetic", "quiet", "big eater", "chatty", "easily bored", "curious", "carefree",
                "smart", "cry baby", "lonely", "naive", "mysterious", "wacky", "rowdy", "tough", "bossy", "curious",
@@ -13,7 +14,7 @@ class Basic(commands.Cog):
         self._last_member = None
 
     @commands.command(name='hatch')
-    async def hatch(self, ctx, arg):
+    async def hatch(self, ctx, arg=None):
         if not arg:
             await ctx.send("Please provide the color of the egg! " + ctx.author.mention)
         else:
@@ -31,15 +32,26 @@ class Basic(commands.Cog):
             if search == 0:
                 await ctx.send("ERROR: You do not possess any " + arg + " eggs!")
             else:
-                await ctx.send("Hatched!")
                 invinst = inv.find_one(myquery)
-                qua = invinst.get("quantity")
-                if qua == 1:
-                    # remove item from inventory
-                    inv.delete_one(invinst)
+                hatchtime = invinst.get("hatch")
+                if datetime.now() > hatchtime:
+                    qua = invinst.get("quantity")
+                    src = invinst.get("src")
+                    await ctx.send("Hatched! This message will be a bit more descriptive in the future...")
+                    if qua == 1:
+                        # remove item from inventory
+                        inv.delete_one(invinst)
+                    else:
+                        # lower quantity by 1
+                        await ctx.send("should lower quantity here " + str(invinst))
+
+                    if src == "tutorial":
+                        event = self.bot.get_cog('Events')
+                        if event is not None:
+                            await ctx.send("Tutorial egg detected")
+                            await event.tut2_embed(ctx)
                 else:
-                    # lower quantity by 1
-                    await ctx.send("should lower quantity here " + str(invinst))
+                    await ctx.send("ERROR: This egg isn't ready to hatch! It needs a bit longer...")
 
 
 def setup(bot):
