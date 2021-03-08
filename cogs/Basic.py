@@ -47,7 +47,7 @@ class Basic(commands.Cog):
                         await ctx.send("should lower quantity here " + str(invinst))
 
                     if src == "tutorial":
-                        event = self.bot.get_cog('Events')
+                        event = self.bot.get_cog('Tutorial')
                         if event is not None:
                             await event.tut2_embed(ctx)
                     await self._create_chao(ctx, arg)

@@ -26,7 +26,7 @@ async def on_ready():
 # ATTACH COGS
 client.load_extension('cogs.Admin')     # Admin commands
 client.load_extension('cogs.Basic')     # Basic chao commands - hatch, play, explore, etc.
-client.load_extension('cogs.Begin')     # New player init
+client.load_extension('cogs.Tutorial')     # New player init
 client.load_extension('cogs.Events')    # Event embeds
 client.load_extension('cogs.Help')      # Help commands
 client.load_extension('cogs.Init')      # Bot initialization commands
