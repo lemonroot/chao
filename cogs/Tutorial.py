@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from cogs.Init import db
 from datetime import datetime, timedelta
+from bson.objectid import ObjectId
 
 
 class Tutorial(commands.Cog):
@@ -39,12 +40,14 @@ class Tutorial(commands.Cog):
 
             # Insert egg into inventory
             # hourtest = datetime.now() + timedelta(hours=1)
-            post = {"userid": ctx.author.id, "itemid": id, "name": name, "quantity": 1, "src": "tutorial", "time": datetime.now(), "hatch": datetime.now()}
+            post = {"userid": ctx.author.id, "itemid": id, "name": name, "quantity": 1, "src": "tutorial",
+                    "time": datetime.now(), "hatch": datetime.now()}
             inv.insert_one(post)
 
             event = self.bot.get_cog('Events')
             if event is not None:
-                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received', rarity, footer)
+                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received',
+                                       rarity, footer)
                 await self.tut1_embed(ctx)
         else:
             await ctx.send('ERROR: You already received an egg! Please use the **!hatch normal** command instead, '
@@ -69,6 +72,13 @@ class Tutorial(commands.Cog):
     async def tut2_embed(self, ctx, member: discord.Member = None):
         member = member or ctx.author
         bot = self.bot.user
+
+        users = db["users"]
+        chao = db["chao"]
+        chaoinst = chao.find_one({"userid": ctx.author.id})
+        active = chaoinst.get("_id")
+        users.update({"_id": ctx.author.id}, {"$set": {"active": active}})
+
         embed = discord.Embed(
             title='Tutorial',
             author=bot,
@@ -80,8 +90,8 @@ class Tutorial(commands.Cog):
         )
         embed.add_field(name='Command', value='!chao', inline='True')
         embed.add_field(name='Command', value='!name', inline='True')
-        embed.add_field(name="Examples", value="!chao\n!chao 1\n!chao ChaoBot", inline="False")
-        embed.add_field(name="Examples", value="!name\n!name ChaoBot", inline="False")
+        embed.add_field(name="Examples", value="!chao\n!chao 1\n!chao Chaobert", inline="False")
+        embed.add_field(name="Examples", value="!name\n!name Chaobert", inline="False")
 
         await ctx.send(embed=embed)
 

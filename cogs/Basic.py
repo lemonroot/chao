@@ -46,11 +46,11 @@ class Basic(commands.Cog):
                         # lower quantity by 1
                         await ctx.send("should lower quantity here " + str(invinst))
 
+                    await self._create_chao(ctx, arg)
                     if src == "tutorial":
                         event = self.bot.get_cog('Tutorial')
                         if event is not None:
                             await event.tut2_embed(ctx)
-                    await self._create_chao(ctx, arg)
                 else:
                     await ctx.send("ERROR: This egg isn't ready to hatch! It needs a bit longer...")
 
@@ -60,8 +60,8 @@ class Basic(commands.Cog):
             array = read.split('\n')
             person = random.choice(array)
         chao = db["chao"]
-        post = {"userid": ctx.author.id, "name": "Chao", "looks": [color, False, True], "data": [0, 0, 0, 5, 0],
-                "grades": ["C", "C", "C", "C", "C", "C"], "stats": [1, 1, 1, 1, 1, 1],
+        post = {"userid": ctx.author.id, "name": "Chao", "looks": [color, False, True], "data": [0, 0, 0.0, 5.0, 0],
+                "grades": ["C", "C", "C", "C", "C"], "stats": [1, 1, 1, 1, 1, 1, 1],
                 "personality": person, "birthday": datetime.now()}
         chao.insert_one(post)
 
