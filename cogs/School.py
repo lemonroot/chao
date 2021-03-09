@@ -73,7 +73,7 @@ class School(commands.Cog):
                     await member.send('Unknown error encountered. Please try again.')
         # If arg is given.
         else:
-            length = len(str(arg))
+            length = len(arg)
             proftest = profanity.contains_profanity(arg)
 
             if length > 16:

@@ -52,7 +52,29 @@ class Basic(commands.Cog):
                         if event is not None:
                             await event.tut2_embed(ctx)
                 else:
-                    await ctx.send("ERROR: This egg isn't ready to hatch! It needs a bit longer...")
+                    await ctx.send("ERROR: This egg isn't ready to hatch!")
+
+    @commands.command(name='setactive', aliases=['active', 'setchao'])
+    async def set_active(self, ctx, arg=None):
+        if not arg:
+            await ctx.send("ERROR: Please specify a chao to set as active, or use **!chaolist** to see all of your chao.")
+        else:
+            chao = db["chao"]
+            users = db["users"]
+
+            user = users.find_one({"_id": ctx.author.id})
+            chaolist = chao.find_one({"userid": ctx.author.id, "name": arg})
+            active = user.get("active")
+            if not chaolist:
+                await ctx.send("ERROR: You have no chao with this name!")
+            else:
+                # Get chao's ID to test it against the active field
+                chaoid = chaolist.get("_id")
+                if chaoid == active:
+                    await ctx.send("ERROR: This chao is already active!")
+                else:
+                    users.update({"_id": ctx.author.id}, {"$set": {"active": chaoid}})
+                    await ctx.send("Your active chao has been set to **" + arg + "**!")
 
     async def _create_chao(self, ctx, color):
         with open('data/personalities.txt', 'r') as f:
@@ -64,8 +86,6 @@ class Basic(commands.Cog):
                 "grades": ["C", "C", "C", "C", "C"], "stats": [1, 1, 1, 1, 1, 1, 1],
                 "personality": person, "birthday": datetime.now()}
         chao.insert_one(post)
-
-
 
 def setup(bot):
     bot.add_cog(Basic(bot))
