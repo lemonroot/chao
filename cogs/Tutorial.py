@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from cogs.Init import db
 from datetime import datetime, timedelta
-from bson.objectid import ObjectId
 
 
 class Tutorial(commands.Cog):

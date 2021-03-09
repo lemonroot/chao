@@ -35,7 +35,8 @@ class Events(commands.Cog):
             color=ctx.author.color,
         )
         embed.set_image(url=img)
-        embed.add_field(name='Instructions', value=steps, inline='True')
+        if steps != "Null":
+            embed.add_field(name='Instructions', value=steps, inline='True')
         embed.set_footer(text=footer)
 
         await ctx.send(embed=embed)
