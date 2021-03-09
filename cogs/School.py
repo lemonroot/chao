@@ -13,7 +13,8 @@ class School(commands.Cog):
         self._last_member = None
 
     @commands.command(name="name")
-    async def name_chao(self, ctx, *, member: discord.member = None):
+    async def name_chao(self, ctx, arg=None, member: discord.member = None):
+        event = self.bot.get_cog('Events')
         member = member or ctx.author
         users = db["users"]
         chao = db["chao"]
@@ -24,50 +25,75 @@ class School(commands.Cog):
         chaoinst = chao.find_one({"_id": ObjectId(active)})
         name = chaoinst.get("name")
 
-        with open('data/names.txt', 'r') as f:
-            read = f.read()
-            array = read.split('\n')
-            suggestion = random.choice(array)
-        if name == "Chao":
-            text = ("Welcome to the fortune-telling house. Oh dear! Your chao doesn't have a name. How about... "
-                    "**" + suggestion + "**?")
-        else:
-            text = ("Hmm... I see. Your chao's name is **" + name + "**? It's a fine name, but I could change"
-                                                                           " it if you'd like. How about... **" +
-                    suggestion + "**?")
-        steps = "Reply yes or no."
         img = "https://chao-island.com/w/images/1/1b/Fortune_teller_chaoicon.png"
         footer = "Hint: The !name command changes the name of your active chao."
 
-        event = self.bot.get_cog('Events')
-        if event is not None:
-            await event.embed_NPC(ctx, "Fortune Teller", text, img, footer, steps)
+        if not arg:
+            with open('data/names.txt', 'r') as f:
+                read = f.read()
+                array = read.split('\n')
+                suggestion = random.choice(array)
+            if name == "Chao":
+                text = ("Welcome to the fortune-telling house. Oh dear! Your chao doesn't have a name. How about... "
+                        "**" + suggestion + "**?")
+            else:
+                text = ("Hmm... I see. Your chao's name is **" + name + "**? It's a fine name, but I could change"
+                                                                               " it if you'd like. How about... **" +
+                        suggestion + "**?")
+            steps = "Reply yes or no."
+            footer = "Hint: The !name command changes the name of your active chao."
 
-        while True:
-            try:
-                # Await user confirmation
-                answer = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
+            if event is not None:
+                await event.embed_NPC(ctx, "Fortune Teller", text, img, footer, steps)
 
-                if answer.content.lower() not in ('y', 'yes', 'n', 'no'):
-                    await ctx.send("You must reply with yes or no!")
+            while True:
+                try:
+                    # Await user confirmation
+                    answer = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
 
-                elif answer.content.lower() in ('yes', 'y'):
-                    text = ("I see. Then it is done! Your chao will now be known as... **" + suggestion + "**!")
-                    steps = "Null"
-                    await event.embed_NPC(ctx, "Fortune Teller", text, img, footer, steps)
-                    chao.update({"_id": active}, {"$set": {"name": str(suggestion)}})
+                    if answer.content.lower() not in ('y', 'yes', 'n', 'no'):
+                        await ctx.send("You must reply with yes or no!")
 
-                    break
+                    elif answer.content.lower() in ('yes', 'y'):
+                        text = ("I see. Then it is done! Your chao will now be known as... **" + suggestion + "**!")
+                        steps = "Null"
+                        await event.embed_NPC(ctx, "Fortune Teller", text, img, footer, steps)
+                        chao.update({"_id": active}, {"$set": {"name": str(suggestion)}})
 
-                else:
-                    text = ("Oh? No? Well then... what would you like to name your chao?")
-                    steps = "Reply with your desired name."
-                    await event.embed_NPC(ctx, "Fortune Teller", text, img, footer, steps)
-                    await self.name_try(ctx, event, text, img, footer, steps, chao, active, member)
-                    break
+                        break
 
-            except ValueError:
-                await member.send('Unknown error encountered. Please try again.')
+                    else:
+                        text = ("Oh? No? Well then... what would you like to name your chao?")
+                        steps = "Reply with your desired name."
+                        await event.embed_NPC(ctx, "Fortune Teller", text, img, footer, steps)
+                        await self.name_try(ctx, event, text, img, footer, steps, chao, active, member)
+                        break
+
+                except ValueError:
+                    await member.send('Unknown error encountered. Please try again.')
+        # If arg is given.
+        else:
+            length = len(str(arg))
+            proftest = profanity.contains_profanity(arg)
+
+            if length > 16:
+                await ctx.send('ERROR: Name is too long. Please try again.')
+
+            elif proftest:
+                await ctx.send('ERROR: Name contains inappropriate language. Please try again.')
+
+            elif set(arg).difference(ascii_letters + digits):
+                await ctx.send(
+                    'ERROR: Name contains invalid characters. Only letters and digits allowed. Please try again.')
+
+            else:
+                text = ("**" + str(
+                    arg) + "**? A fine name... Presto! It is done. Your chao is now known as **" + str(
+                    arg) + "**!")
+                steps = "Null"
+                await event.embed_NPC(ctx, "Fortune Teller", text, img, footer, steps)
+
+                chao.update({"_id": active}, {"$set": {"name": str(arg)}})
 
     async def name_try(self, ctx, event, text, img, footer, steps, chao, active, member):
         while True:
