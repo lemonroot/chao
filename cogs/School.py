@@ -1,8 +1,10 @@
 import discord
 from discord.ext import commands
+from string import ascii_letters, digits
 from cogs.Init import db
 import random
 from bson.objectid import ObjectId
+from better_profanity import profanity
 
 
 class School(commands.Cog):
@@ -56,23 +58,47 @@ class School(commands.Cog):
                     chao.update({"_id": active}, {"$set": {"name": str(suggestion)}})
 
                     break
-                elif answer.content.lower() in ('no' or 'n'):
+
+                else:
                     text = ("Oh? No? Well then... what would you like to name your chao?")
                     steps = "Reply with your desired name."
                     await event.embed_NPC(ctx, "Fortune Teller", text, img, footer, steps)
-
-                    answer = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
-
-                    text = ("**" + str(answer.content) + "**? A fine name... Presto! It is done. Your chao is now known as **" + str(answer.content) + "**!")
-                    steps = "Null"
-                    await event.embed_NPC(ctx, "Fortune Teller", text, img, footer, steps)
-
-                    chao.update({"_id": active}, {"$set": {"name": str(answer.content)}})
-
+                    await self.name_try(ctx, event, text, img, footer, steps, chao, active, member)
                     break
+
             except ValueError:
                 await member.send('Unknown error encountered. Please try again.')
 
+    async def name_try(self, ctx, event, text, img, footer, steps, chao, active, member):
+        while True:
+            try:
+                nametry = await self.bot.wait_for('message',
+                                                  check=lambda message: message.author == ctx.author)
+                length = len(str(nametry.content))
+                proftest = profanity.contains_profanity(nametry.content)
+
+                if length > 16:
+                    await ctx.send('ERROR: Name is too long. Please try again.')
+
+                elif proftest:
+                    await ctx.send('ERROR: Name contains inappropriate language. Please try again.')
+
+                elif set(nametry.content).difference(ascii_letters + digits):
+                    await ctx.send(
+                        'ERROR: Name contains invalid characters. Only letters and digits allowed. Please try again.')
+
+                else:
+                    text = ("**" + str(
+                        nametry.content) + "**? A fine name... Presto! It is done. Your chao is now known as **" + str(
+                        nametry.content) + "**!")
+                    steps = "Null"
+                    await event.embed_NPC(ctx, "Fortune Teller", text, img, footer, steps)
+
+                    chao.update({"_id": active}, {"$set": {"name": str(nametry.content)}})
+                    break
+
+            except ValueError:
+                await member.send('Unknown error encountered. Please try again.')
 
 def setup(bot):
     bot.add_cog(School(bot))
