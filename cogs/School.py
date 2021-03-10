@@ -126,5 +126,12 @@ class School(commands.Cog):
             except ValueError:
                 await member.send('Unknown error encountered. Please try again.')
 
+    @commands.command(name="doctor")
+    async def doctor(self, ctx):
+        items = db["items"]
+        img = "https://chao-island.com/w/images/8/85/Sa2-chaodoctor.png"
+        footer = "Hint: The doctor can tell you how soon an egg will hatch!"
+        text = "Hello there! Always happy to see a patient."
+
 def setup(bot):
     bot.add_cog(School(bot))

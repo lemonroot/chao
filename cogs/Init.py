@@ -1,6 +1,7 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from pymongo import MongoClient
+from datetime import datetime
 
 mongo_url = "mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 cluster = MongoClient(mongo_url)
@@ -11,6 +12,7 @@ class Init(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
+        self.update_shop.start()
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -27,6 +29,10 @@ class Init(commands.Cog):
                 users.update_one({"_id": ctx.author.id}, {"$inc": {"rings": 1}})
             else:
                 return
+
+    @tasks.loop(hours=24)
+    async def update_shop(self):
+        print("The shop would update automatically right now.")
 
 
 def setup(bot):

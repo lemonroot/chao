@@ -9,13 +9,14 @@ class Events(commands.Cog):
         self.bot = bot
         self._last_member = None
 
-    async def embed_item(self, ctx, name, color, val, qua, img, src, rarity, footer):
+    async def embed_item(self, ctx, name, color, val, qua, img, thumb, src, rarity, footer):
         embed = discord.Embed(
             title='Event',
             description=(ctx.author.mention + ' ' + src + ' ' + str(qua) + ' **' + name + '**!'),
             color=ctx.author.color,
         )
         embed.set_image(url=img)
+        embed.set_thumbnail(url=thumb)
         if color != 'null':
             embed.add_field(name='Color', value=color, inline='True')
         embed.add_field(name='Value', value=val, inline='True')
@@ -23,8 +24,6 @@ class Events(commands.Cog):
         embed.set_footer(text=footer)
 
         await ctx.send(embed=embed)
-
-
 
     async def embed_NPC(self, ctx, npc, text, img, footer, steps, member: discord.Member = None):
         member = member or ctx.author
@@ -34,7 +33,7 @@ class Events(commands.Cog):
             description=text,
             color=ctx.author.color,
         )
-        embed.set_image(url=img)
+        embed.set_image(url=img),
         if steps != "Null":
             embed.add_field(name='Instructions', value=steps, inline='True')
         embed.set_footer(text=footer)

@@ -34,6 +34,7 @@ class Tutorial(commands.Cog):
             color = egg.get('color')
             val = egg.get('val')
             img = egg.get('img')
+            thumb = egg.get('icon')
             rarity = egg.get('rarity')
             footer = 'Hint: Use !hatch to hatch the egg!'
 
@@ -45,7 +46,7 @@ class Tutorial(commands.Cog):
 
             event = self.bot.get_cog('Events')
             if event is not None:
-                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received',
+                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, thumb, 'received',
                                        rarity, footer)
                 await self.tut1_embed(ctx)
         else:

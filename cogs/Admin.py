@@ -18,12 +18,13 @@ class Admin(commands.Cog):
             color = egg.get('color')
             val = egg.get('val')
             img = egg.get('img')
+            thumb = egg.get('icon')
             rarity = egg.get('rarity')
             footer = str(egg.get('footer')) + ' \nHint: This is only a test!'
 
             event = self.bot.get_cog('Events')
             if event is not None:
-                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received', rarity,
+                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, thumb, 'received', rarity,
                                        footer)
         else:
             print('no')
