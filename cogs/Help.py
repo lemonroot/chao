@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import random
 
+
 class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -51,7 +52,7 @@ class Help(commands.Cog):
                                                          "green, lime, cyan, purple, pink, orange, brown, yellow, black, "
                                                          "gray, white, onyx, ruby, sapphire, garnet, aquamarine, emerald, "
                                                          "amethyst, peridot, topaz, silver, gold, indigo, "
-                                                         "crimson, mint, and pearl.")
+                                                         "crimson, mint, diamond, and pearl.")
         em.add_field(name="**Syntax**", value="!eggtest *color*")
         em.add_field(name="**Examples**", value="!eggtest red\n!eggtest sapphire\n!eggtest brown")
 
