@@ -66,7 +66,6 @@ class Tutorial(commands.Cog):
             color=ctx.author.color,
         )
         embed.add_field(name='Command', value='!hatch normal', inline='True')
-
         await ctx.send(embed=embed)
 
     async def tut2_embed(self, ctx, member: discord.Member = None):
@@ -94,6 +93,7 @@ class Tutorial(commands.Cog):
         embed.add_field(name="Examples", value="!name\n!name Chaobert", inline="False")
 
         await ctx.send(embed=embed)
+
 
 def setup(bot):
     bot.add_cog(Tutorial(bot))

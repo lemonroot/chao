@@ -30,7 +30,7 @@ class Init(commands.Cog):
             else:
                 return
 
-    @tasks.loop(hours=24)
+    @tasks.loop(hours=12)
     async def update_shop(self):
         print("The shop would update automatically right now.")
 
