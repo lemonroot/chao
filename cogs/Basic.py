@@ -1,6 +1,9 @@
 import discord
 from discord.ext import commands
 from cogs.Init import db
+from datetime import datetime
+import random
+from numpy.random import choice
 
 personality = ["gentle", "naughty", "energetic", "quiet", "big eater", "chatty", "easily bored", "curious", "carefree",
                "smart", "cry baby", "lonely", "naive", "mysterious", "wacky", "rowdy", "tough", "bossy", "curious",
@@ -13,7 +16,7 @@ class Basic(commands.Cog):
         self._last_member = None
 
     @commands.command(name='hatch')
-    async def hatch(self, ctx, arg):
+    async def hatch(self, ctx, arg=None):
         if not arg:
             await ctx.send("Please provide the color of the egg! " + ctx.author.mention)
         else:
@@ -31,15 +34,76 @@ class Basic(commands.Cog):
             if search == 0:
                 await ctx.send("ERROR: You do not possess any " + arg + " eggs!")
             else:
-                await ctx.send("Hatched!")
                 invinst = inv.find_one(myquery)
-                qua = invinst.get("quantity")
-                if qua == 1:
-                    # remove item from inventory
-                    inv.delete_one(invinst)
+                hatchtime = invinst.get("hatch")
+                if datetime.now() > hatchtime:
+                    qua = invinst.get("quantity")
+                    src = invinst.get("src")
+                    await ctx.send("Hatched! This message will be a bit more descriptive in the future...")
+                    if qua == 1:
+                        # remove item from inventory
+                        inv.delete_one(invinst)
+                    else:
+                        # lower quantity by 1
+                        invinst.update({"quantity": -1})
+                        await ctx.send("should lower quantity here " + str(invinst))
+
+                    await self._create_chao(ctx, arg, src)
+                    if src == "tutorial":
+                        event = self.bot.get_cog('Tutorial')
+                        if event is not None:
+                            await event.tut2_embed(ctx)
                 else:
-                    # lower quantity by 1
-                    await ctx.send("should lower quantity here " + str(invinst))
+                    await ctx.send("ERROR: This egg isn't ready to hatch!")
+
+    async def _create_chao(self, ctx, color, src):
+        with open('data/personalities.txt', 'r') as f:
+            read = f.read()
+            array = read.split('\n')
+            person = random.choice(array)
+        chao = db["chao"]
+        statlist = await self._calc_stats(ctx, src)
+        post = {"userid": ctx.author.id, "name": "Chao", "looks": [color, False, True], "data": [0, 0, 0.0, 5.0, 0],
+                "grades": statlist, "stats": [0, 0, 0, 0, 0, 0, 0],
+                "personality": person, "birthday": datetime.now()}
+        chao.insert_one(post)
+
+    async def _calc_stats(self, ctx, src):
+        stats = ["S", "A", "B", "C", "D", "E"]
+        if src == 'tutorial':
+            statdist = choice(stats, 5, p=[0.01, 0.05, 0.14, 0.3, 0.3, 0.2])
+        elif src == 'shop':
+            statdist = choice(stats, 5, p=[0.01, 0.05, 0.24, 0.3, 0.2, 0.2])
+        return list(statdist)
+
+    @commands.command(name='setactive', aliases=['active', 'setchao'])
+    async def set_active(self, ctx, arg=None):
+        if not arg:
+            await ctx.send("ERROR: Please specify a chao to set as active, or use **!chaolist** to see all of your chao.")
+        else:
+            chao = db["chao"]
+            users = db["users"]
+
+            user = users.find_one({"_id": ctx.author.id})
+            chaolist = chao.find_one({"userid": ctx.author.id, "name": arg})
+            active = user.get("active")
+            if not chaolist:
+                await ctx.send("ERROR: You have no chao with this name!")
+            else:
+                # Get chao's ID to test it against the active field
+                chaoid = chaolist.get("_id")
+                if chaoid == active:
+                    await ctx.send("ERROR: This chao is already active!")
+                else:
+                    users.update({"_id": ctx.author.id}, {"$set": {"active": chaoid}})
+                    await ctx.send("Your active chao has been set to **" + arg + "**!")
+
+    @commands.command(name='rings', aliases=['coins', 'money'])
+    async def rings(self, ctx):
+        users = db["users"]
+        user = users.find_one({"_id": ctx.author.id})
+        rings = user.get("rings")
+        await ctx.send(ctx.author.mention + ", you currently have " + str(rings) + " rings.")
 
 
 def setup(bot):

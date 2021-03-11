@@ -1,14 +1,26 @@
 You earn 1 ring per Discord message sent!
-The Black Market's stock regularly changes.
+The Black Market's stock changes every 12 hours.
 The time required for an egg to hatch is dependent on its color and the way you acquired it.
 Every chao has a favorite fruit and a least favorite fruit.
 You can increase your chao's intelligence by taking them to class!
-You can skip the fortune teller's suggested names by supplying a name after the !name command.
-I heard a rumor that a secret Chao Plaza exists with special eggs! I can't remember who told me...
+You can skip the fortune teller's suggestions by supplying a name after the !name command.
+I heard a rumor that a secret Chao Plaza exists with special eggs and fun games! I can't remember who told me...
 It's better to do long explorations before you go to sleep.
 I was programmed by one person. You can do it too! ... And probably better.
 Your chao's personality influences their habits!
 All chao born through breeding come from normal eggs and hatch quickly.
 Chao bought from the Black Market tend to have average stat grades.
 You can increase a chao's stat grades through reincarnation.
-you can speed up a chao's lifecycle with dried fruit, but be careful! They'll need more attention than normal to stay happy.
+You can speed up a chao's lifecycle with dried fruit, but be careful! Rapid aging can cause stress...
+A chao's stats and grades go hand in hand.
+The Chao Doctor can tell you when your egg will be ready to hatch.
+If you ever see a jewel egg in the Black Market, consider snatching it up! They're beautiful *and* desirable!
+Your chao won't eat fruit if it isn't hungry. Duh!
+When a chao reaches the end of its lifecycle, it will die. However, I've heard that if you treat it just right, a chao might reincarnate instead!
+Rumor has it there used to be special "chaos chao". They were born when a chao interacted with every animal in the world! Sounds spooky if you ask me.
+Chao used to gain special effects from interacting with various animals. These days, animals have learned to hide from chao. No wonder why!
+Chaos drives are special exploration rewards which can increase a chao's stats regardless of hunger. They're a rare commodity, so hold them close.
+With the !daily command, you can earn some special prizes just for keeping track of your progress.
+You can submit suggestions or feedback on the official ChaoBot Discord server!
+Breeding chao is an exercise in patience.
+You can only have 1 active chao at a time. Any additional chao will stay in the garden, up to a total of 12.

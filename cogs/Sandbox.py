@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from cogs.Init import db
+from numpy.random import choice
 
 
 class Sandbox(commands.Cog):
@@ -17,24 +18,11 @@ class Sandbox(commands.Cog):
             await ctx.send('Hello {0.name}... This feels familiar.'.format(member))
         self._last_member = member
 
-    @commands.command(name='eggtest')
-    async def egg_test(self, ctx, arg):
-
-        items = db["items"]
-
-        egg = items.find_one({"color": arg})
-        name = egg.get('name')
-        color = egg.get('color')
-        val = egg.get('val')
-        img = egg.get('img')
-        rarity = egg.get('rarity')
-        footer = 'Hint: This is only a test!'
-
-        event = self.bot.get_cog('Events')
-        if event is not None:
-            await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, 'received', rarity,
-                                   footer)
-
+    @commands.command(name='stats')
+    async def stattest(self, ctx):
+        stats = ["S", "A", "B", "C", "D", "E"]
+        statdist = choice(stats, 5, p=[0.01, 0.05, 0.14, 0.3, 0.3, 0.2])
+        await ctx.send(statdist)
 
 def setup(bot):
     bot.add_cog(Sandbox(bot))
