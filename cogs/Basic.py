@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from cogs.Init import db
-from datetime import datetime
+from datetime import datetime, timedelta
 import random
 from numpy.random import choice
 
@@ -100,6 +100,58 @@ class Basic(commands.Cog):
         user = users.find_one({"_id": ctx.author.id})
         rings = user.get("rings")
         await ctx.send(ctx.author.mention + ", you currently have " + str(rings) + " rings.")
+
+    @commands.command(name="buy")
+    async def buy(self, ctx, arg=None):
+        shop = db["shop"]
+        inv = db["inventory"]
+        users = db["users"]
+
+        # Find current user
+        user = users.find_one({"_id": ctx.author.id})
+        rings = user.get("rings")
+
+        if not arg:
+            await ctx.send(ctx.author.mention + ", please specify the name of what you wish to buy!")
+        else:
+            inst = shop.find_one({"_id": int(arg)})
+            cost = inst.get("val")
+            if cost > rings:
+                await ctx.send("ERROR: " + ctx.author.mention + ", you cannot afford this!")
+            else:
+                await ctx.send(ctx.author.mention + ", how many would you like to buy?")
+
+                qua = await self.bot.wait_for('message',
+                                                  check=lambda message: message.author == ctx.author)
+
+                total = int(qua.content) * int(cost)
+                if total > rings:
+                    await ctx.send("ERROR: " + ctx.author.mention + ", you cannot afford this!")
+                else:
+                    name = inst.get("name")
+                    color = inst.get("color")
+                    val = cost
+                    img = inst.get("img")
+                    thumb = inst.get("icon")
+                    src = inst.get("src")
+                    rarity = inst.get("rarity")
+                    footer = inst.get("footer")
+
+                    if not color:
+                        event = self.bot.get_cog('Events')
+                        if event is not None:
+                            await event.embed_item(ctx, name, "null", val, qua.content, img, thumb, "purchased", rarity, footer)
+                    else:
+                        event = self.bot.get_cog('Events')
+                        if event is not None:
+                            await event.embed_item(ctx, name, color.capitalize(), val, qua.content, img, thumb, "purchased", rarity, footer)
+
+                    newrings = rings - total
+                    users.update_one({"_id": ctx.author.id}, {"$set": {"rings": newrings}})
+
+                    post = {"userid": ctx.author.id, "itemid": int(arg), "name": name, "quantity": int(qua.content), "src": src,
+                            "time": datetime.now(), "hatch": (datetime.now() + timedelta(hours=1))}
+                    inv.insert_one(post)
 
 
 def setup(bot):

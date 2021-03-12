@@ -48,13 +48,16 @@ class Events(commands.Cog):
 
         embed = discord.Embed(
             title="Black Market",
-            description="Welcome to the Black Market! You can use **!buy** to purchase an item.",
+            description="Welcome to the Black Market!",
+            hint="Hint: You can use !buy to purchase an item.",
             color=ctx.author.color,
         )
         embed.set_image(url="https://chao-island.com/w/images/b/b8/Blackmarketchao.png")
 
         cursor = shop.find({})
+        num = 0
         for s in cursor:
+            id = s.get("_id")
             name = s.get("name")
             color = s.get("color")
             type = s.get("type")
@@ -62,12 +65,12 @@ class Events(commands.Cog):
             rarity = s.get("rarity")
             icon = s.get("icon")
             if type == "fruit":
-                embed.add_field(name=('🍎' + name.capitalize()), value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline="False")
+                embed.add_field(name=(str(id) + ': 🍎' + name.capitalize()), value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline="False")
             elif type == "hat":
-                embed.add_field(name=('🎩' + name.capitalize()), value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline="False")
+                embed.add_field(name=(str(id) + ': 🎩' + name.capitalize()), value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline="False")
             else:
-                embed.add_field(name=('🥚' + color.capitalize()) + ' egg', value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline="False")
-
+                embed.add_field(name=(str(id) + ': 🥚' + color.capitalize()) + ' egg', value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline="False")
+        embed.set_footer(text="Hint: Buy an item with the !buy command and the corresponding ID #. Example: !buy 8")
         await ctx.send(embed=embed)
 
 
