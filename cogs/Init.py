@@ -91,7 +91,7 @@ class Init(commands.Cog):
 
         # Accessory calcs
         itemlist.append(list(items.aggregate([
-            {"$match": {"type": "hat"}},
+            {"$match": {"type": "hat", "src": "shop1"}},
             {"$sample": {"size": 2}}
         ])))
         print(itemlist)
