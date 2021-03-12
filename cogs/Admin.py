@@ -30,6 +30,12 @@ class Admin(commands.Cog):
             print('no')
             return
 
+    @commands.command(name='setrings')
+    async def setrings(self, ctx, arg):
+        if ctx.message.author.guild_permissions.administrator:
+            users = db["users"]
+            users.update_one({"_id": ctx.author.id}, {"$set": {"rings": int(arg)}})
+
 
 def setup(bot):
     bot.add_cog(Admin(bot))

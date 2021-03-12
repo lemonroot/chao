@@ -102,7 +102,6 @@ class Init(commands.Cog):
         # Insert black market items into shop collection
         for s in range(len(itemlist)):
             shop.insert(itemlist[s])
-
         return itemlist
 
 
