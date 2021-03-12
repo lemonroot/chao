@@ -24,5 +24,6 @@ class Sandbox(commands.Cog):
         statdist = choice(stats, 5, p=[0.01, 0.05, 0.14, 0.3, 0.3, 0.2])
         await ctx.send(statdist)
 
+
 def setup(bot):
     bot.add_cog(Sandbox(bot))

@@ -36,11 +36,12 @@ class Tutorial(commands.Cog):
             img = egg.get('img')
             thumb = egg.get('icon')
             rarity = egg.get('rarity')
+            src = "tutorial"
             footer = 'Hint: Use !hatch to hatch the egg!'
 
             # Insert egg into inventory
             # hourtest = datetime.now() + timedelta(hours=1)
-            post = {"userid": ctx.author.id, "itemid": id, "name": name, "quantity": 1, "src": "tutorial",
+            post = {"userid": ctx.author.id, "itemid": id, "name": name, "quantity": 1, "src": src,
                     "time": datetime.now(), "hatch": datetime.now()}
             inv.insert_one(post)
 

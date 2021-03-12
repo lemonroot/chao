@@ -133,5 +133,16 @@ class School(commands.Cog):
         footer = "Hint: The doctor can tell you how soon an egg will hatch!"
         text = "Hello there! Always happy to see a patient."
 
+    @commands.command(name="shop", aliases=["market", "blackmarket", "bm"])
+    async def shop_open(self, ctx, member: discord.member = None):
+        event = self.bot.get_cog('Events')
+        member = member or ctx.author
+        users = db["users"]
+        chao = db["chao"]
+
+        if event is not None:
+            await event.embed_shop(ctx)
+
+
 def setup(bot):
     bot.add_cog(School(bot))
