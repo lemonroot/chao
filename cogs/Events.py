@@ -40,6 +40,23 @@ class Events(commands.Cog):
 
         await ctx.send(embed=embed)
 
+    async def embed_shop(self, ctx, member: discord.Member = None):
+        member = member or ctx.author
+        bot = self.bot.user
+        init = self.bot.get_cog('Init')
+
+        embed = discord.Embed(
+            title="Black Market",
+            description="Welcome to the Black Market! You can use **!buy** to purchase an item.",
+            color=ctx.author.color,
+        )
+        embed.set_image(url="https://chao-island.com/w/images/b/b8/Blackmarketchao.png")
+
+        embed.add_field(name="List", value=init.update_shop)
+
+        await ctx.send(embed=embed)
+
+
 
 def setup(bot):
     bot.add_cog(Events(bot))

@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands, tasks
 from pymongo import MongoClient
 from numpy.random import choice
+import datetime
 
 mongo_url = "mongodb+srv://lemonroot:LFijfLSGFtxylftV0uUX@cluster0.5jfol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 cluster = MongoClient(mongo_url)
@@ -32,45 +33,78 @@ class Init(commands.Cog):
 
     @tasks.loop(hours=12)
     async def update_shop(self):
-        shop = db["shop"]
         items = db["items"]
+        shop = db["shop"]
+
+        utc_timestamp = datetime.datetime.utcnow()
 
         # Egg calcs
         probs = ["A,A,A", "A,A,B", "A,B,B"]
-        statdist = choice(probs, 1, p=[.8, .15, .05])
+        eggdist = choice(probs, 1, p=[.8, .15, .05])
 
-        if statdist == "A,A,A":
-            cursor = items.aggregate([
+        if eggdist == "A,A,A":
+            itemlist = list(items.aggregate([
                 {"$match": {"type": "egg", "src": "shop1"}},
                 {"$sample": {"size": 3}}
-            ])
-            print(list(cursor))
-        elif statdist == "A,A,B":
-            cursor = items.aggregate([
+            ]))
+        elif eggdist == "A,A,B":
+            itemlist = list(items.aggregate([
                 {"$match": {"type": "egg", "src": "shop1"}},
                 {"$sample": {"size": 2}}
-            ])
-            print(list(cursor))
-            cursor = items.aggregate([
+            ]))
+            itemlist.append(list(items.aggregate([
                 {"$match": {"type": "egg", "src": "shop2"}},
                 {"$sample": {"size": 1}}
-            ])
-            print(list(cursor))
-        elif statdist == "A,B,B":
-            cursor = items.aggregate([
+            ])))
+        elif eggdist == "A,B,B":
+            itemlist = list(items.aggregate([
                 {"$match": {"type": "egg", "src": "shop1"}},
                 {"$sample": {"size": 1}}
-            ])
-            print(list(cursor))
-            cursor = items.aggregate([
+            ]))
+            itemlist.append(list(items.aggregate([
                 {"$match": {"type": "egg", "src": "shop2"}},
                 {"$sample": {"size": 2}}
-            ])
-            print(list(cursor))
+            ])))
 
         # Fruit calcs
+        probs = ["A,A,B", "A,A,B,B"]
+        fruitdist = choice(probs, 1, p=[.6, .4])
+
+        if fruitdist == "A,A,B":
+            itemlist.append(list(items.aggregate([
+                {"$match": {"type": "fruit", "src": "shop1"}},
+                {"$sample": {"size": 2}}
+            ])))
+            itemlist.append(list(items.aggregate([
+                {"$match": {"type": "fruit", "src": "shop2"}},
+                {"$sample": {"size": 1}}
+            ])))
+        elif fruitdist == "A,A,B,B":
+            itemlist.append(list(items.aggregate([
+                {"$match": {"type": "fruit", "src": "shop1"}},
+                {"$sample": {"size": 2}}
+            ])))
+            itemlist.append(list(items.aggregate([
+                {"$match": {"type": "fruit", "src": "shop2"}},
+                {"$sample": {"size": 2}}
+            ])))
 
         # Accessory calcs
+        itemlist.append(list(items.aggregate([
+            {"$match": {"type": "hat"}},
+            {"$sample": {"size": 2}}
+        ])))
+        print(itemlist)
+
+        # Remove all fields from Black Market collection
+        shop.remove({})
+
+        # Insert black market items into shop collection
+        for s in range(len(itemlist)):
+            shop.insert(itemlist[s])
+
+        return itemlist
+
 
 def setup(bot):
     bot.add_cog(Init(bot))
