@@ -27,7 +27,7 @@ class Init(commands.Cog):
             myquery = {"_id": ctx.author.id}
             search = users.count_documents(myquery)
             if search != 0:
-                users.update_one({"_id": ctx.author.id}, {"$inc": {"rings": 1}})
+                users.update_one({"_id": ctx.author.id}, {"$inc": {"rings": 10}})
             else:
                 return
 

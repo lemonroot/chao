@@ -59,7 +59,7 @@ class Basic(commands.Cog):
             person = random.choice(array)
         chao = db["chao"]
         statlist = await self._calc_stats(ctx, src)
-        post = {"userid": ctx.author.id, "name": "Chao", "looks": [color, False, True], "data": [0, 0, 0.0, 5.0, 0],
+        post = {"userid": ctx.author.id, "name": "Chao", "looks": [color, False, True], "data": [0, 0, 0.0, 5, 0],
                 "grades": statlist, "stats": [0, 0, 0, 0, 0, 0, 0],
                 "personality": person, "birthday": datetime.now()}
         chao.insert_one(post)
@@ -152,6 +152,34 @@ class Basic(commands.Cog):
                     post = {"userid": ctx.author.id, "itemid": int(arg), "name": name, "quantity": int(qua.content), "src": src,
                             "time": datetime.now(), "hatch": (datetime.now() + timedelta(hours=1))}
                     inv.insert_one(post)
+
+    @commands.command(name="profile", aliases=["chao"])
+    async def profile(self, ctx, arg=None):
+        users = db["users"]
+        inv = db["inventory"]
+        chao = db["chao"]
+
+        if not arg:
+            # Find user's active chao
+            user = users.find_one({"_id": ctx.author.id})
+            active = user.get("active")
+
+            chaoinst = chao.find_one({"_id": active})
+
+            name = chaoinst.get("name")
+            event = self.bot.get_cog('Events')
+            if event is not None:
+                await event.embed_profile(ctx, name, chaoinst)
+        else:
+            chaoinst = chao.find_one({"userid": ctx.author.id, "name": str(arg)})
+            if not chaoinst:
+                await ctx.send(ctx.author.mention + ", you have no chao by that name!")
+            else:
+                name = chaoinst.get("name")
+                event = self.bot.get_cog('Events')
+                if event is not None:
+                    await event.embed_profile(ctx, name, chaoinst)
+
 
 
 def setup(bot):
