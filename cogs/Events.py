@@ -105,7 +105,7 @@ class Events(commands.Cog):
                                              str(stats[2]) + "\n" + grades[2] + " **Run:** Lvl " + str(stats[3]) +
                                              "\n" + grades[3] + " **Stamina:** Lvl " + str(stats[4])), inline=True)
         embed.add_field(name="Intelligence", value=intstr)
-        embed.add_field(name="Hunger Meter", value=(int(hunger) * ":blue_square:" + (10-int(hunger)) *
+        embed.add_field(name="Hunger Meter", value=(int(hunger) * ":blue_square:" + (5-int(hunger)) *
                                                     ":white_large_square:"), inline=False)
         await ctx.send(embed=embed)
 
