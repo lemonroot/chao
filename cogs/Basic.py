@@ -4,6 +4,7 @@ from cogs.Init import db
 from datetime import datetime, timedelta
 import random
 from numpy.random import choice
+import asyncio
 
 
 class Basic(commands.Cog):
@@ -180,6 +181,133 @@ class Basic(commands.Cog):
                 if event is not None:
                     await event.embed_profile(ctx, name, chaoinst)
 
+    # Can only be used once per 24 hours per user.
+    @commands.command(name="daily")
+    @commands.cooldown(1, 60*60*24, commands.BucketType.user)
+    async def daily(self, ctx):
+        users = db["users"]
+        inv = db["inventory"]
+        items = db["items"]
+        user = users.find_one({"_id": ctx.author.id})
+        daily = user.get("daily")
+
+        with open('data/daily.txt', 'r') as f:
+            read = f.read()
+            rewards = read.split('\n')
+
+        # Increase daily value
+        users.update_one({"_id": ctx.author.id}, {"$inc": {"daily": daily+1}})
+
+        if daily >= 21:
+            users.update_one({"_id": ctx.author.id}, {"$inc": {"rings": 50}})
+            await ctx.send(ctx.author.mention + " received 50 rings.")
+        elif rewards[daily] == "rings":
+            users.update_one({"_id": ctx.author.id}, {"$inc": {"rings": 100}})
+            await ctx.send(ctx.author.mention + " received 100 rings.")
+        elif rewards[daily] == "egg":
+            msg = await ctx.send("Congratulations, " + ctx.author.mention + "! You've reached " + str(daily+1) + " day(s) of checking"
+                           " your daily rewards. You may select one **red**, **blue**, or **green** egg to keep. Please "
+                           "respond with your choice.")
+            emojis = ['🔴', '🔵', '🟢']
+            for emoji in emojis:
+                await msg.add_reaction(emoji)
+
+            def check(react, user):
+                if react.emoji == '🔴' and user == ctx.author:
+                    return '🔴'
+                elif react.emoji == '🔵' and user == ctx.author:
+                    return '🔵'
+                elif react.emoji == '🟢' and user == ctx.author:
+                    return '🟢'
+                else:
+                    return
+            try:
+                react, user = await self.bot.wait_for('reaction_add', check=check)
+                if react.emoji == "🔴":
+                    item = items.find_one({"_id": 2})
+                    name = item.get("name")
+                    color = item.get("color")
+                    val = item.get("val")
+                    img = item.get("img")
+                    thumb = item.get("icon")
+                    rarity = item.get("rarity")
+                    footer = item.get("footer")
+                    inv.insert_one(
+                            {"userid": ctx.author.id, "itemid": 2, "name": name, "quantity": 1,
+                             "src": "daily", "time": datetime.now(), "hatch": (datetime.now() + timedelta(hours=1))})
+
+                    event = self.bot.get_cog('Events')
+                    if event is not None:
+                        await event.embed_item(ctx, name, color, str(val) + ' rings', 1, img, thumb, 'received',
+                                               rarity, footer)
+                elif react.emoji == "🟢":
+                    item = items.find_one({"_id": 5})
+                    name = item.get("name")
+                    color = item.get("color")
+                    val = item.get("val")
+                    img = item.get("img")
+                    thumb = item.get("icon")
+                    rarity = item.get("rarity")
+                    footer = item.get("footer")
+                    inv.insert_one(
+                        {"userid": ctx.author.id, "itemid": 5, "name": name, "quantity": 1,
+                         "src": "daily", "time": datetime.now(), "hatch": (datetime.now() + timedelta(hours=1))})
+
+                    event = self.bot.get_cog('Events')
+                    if event is not None:
+                        await event.embed_item(ctx, name, color, str(val) + ' rings', 1, img, thumb, 'received',
+                                               rarity, footer)
+                elif react.emoji == "🔵":
+                    item = items.find_one({"_id": 3})
+                    name = item.get("name")
+                    color = item.get("color")
+                    val = item.get("val")
+                    img = item.get("img")
+                    thumb = item.get("icon")
+                    rarity = item.get("rarity")
+                    footer = item.get("footer")
+                    inv.insert_one(
+                            {"userid": ctx.author.id, "itemid": 3, "name": name, "quantity": 1,
+                             "src": "daily", "time": datetime.now(), "hatch": (datetime.now() + timedelta(hours=1))})
+
+                    event = self.bot.get_cog('Events')
+                    if event is not None:
+                        await event.embed_item(ctx, name, color, str(val) + ' rings', 1, img, thumb, 'received',
+                                               rarity, footer)
+            except asyncio.TimeoutError:
+                await ctx.send("Unknown error")
+
+        else:
+            item = items.find_one({"_id": int(rewards[daily])})
+            test = user.find_one({"itemid": int(rewards[daily])})
+            if not test:
+                name = item.get("name")
+                val = item.get("val")
+                img = item.get("img")
+                thumb = item.get("icon")
+                rarity = item.get("rarity")
+                footer = item.get("footer")
+                inv.insert_one({"userid": ctx.author.id, "itemid": int(rewards[daily]), "name": name, "quantity": 1, "src": "daily"})
+            else:
+                name = item.get("name")
+                val = item.get("val")
+                img = item.get("img")
+                thumb = item.get("icon")
+                rarity = item.get("rarity")
+                footer = item.get("footer")
+                qua = test.get("quantity")
+                inv.update_one({"userid": ctx.author.id, "itemid": int(rewards[daily])}, {"$set": {"quantity": qua+1}})
+
+            event = self.bot.get_cog('Events')
+            if event is not None:
+                await event.embed_item(ctx, name, "null", str(val) + ' rings', 1, img, thumb, 'received',
+                                       rarity, footer)
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            await ctx.send(ctx.author.mention + ", please wait %.0f more hour(s) before using this command." % (error.retry_after/60/60))
+        raise error
 
 
 def setup(bot):

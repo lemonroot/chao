@@ -24,7 +24,7 @@ class Tutorial(commands.Cog):
         search = users.count_documents(myquery)
         if search == 0:
             # Insert user into users table
-            post = {"_id": ctx.author.id, "rings": 50}
+            post = {"_id": ctx.author.id, "rings": 50, "daily": 0}
             users.insert_one(post)
 
             # Find item in items table

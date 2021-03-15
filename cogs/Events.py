@@ -20,7 +20,7 @@ class Events(commands.Cog):
         embed.set_image(url=img)
         embed.set_thumbnail(url=thumb)
         if color != 'null':
-            embed.add_field(name='Color', value=color, inline='True')
+            embed.add_field(name='Color', value=color.capitalize(), inline='True')
         embed.add_field(name='Value', value=val, inline='True')
         embed.add_field(name='Rarity', value=rarity, inline='True')
         embed.set_footer(text=footer)
