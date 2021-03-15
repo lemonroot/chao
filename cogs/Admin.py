@@ -24,8 +24,8 @@ class Admin(commands.Cog):
 
             event = self.bot.get_cog('Events')
             if event is not None:
-                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, thumb, 'received', rarity,
-                                       footer)
+                await event.embed_item(ctx, name, color.capitalize(), str(val) + ' rings', 1, img, thumb, 'received',
+                                       rarity, footer)
         else:
             print('no')
             return
