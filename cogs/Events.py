@@ -20,9 +20,9 @@ class Events(commands.Cog):
         embed.set_image(url=img)
         embed.set_thumbnail(url=thumb)
         if color != 'null':
-            embed.add_field(name='Color', value=color.capitalize(), inline='True')
-        embed.add_field(name='Value', value=val, inline='True')
-        embed.add_field(name='Rarity', value=rarity, inline='True')
+            embed.add_field(name='Color', value=color.capitalize(), inline=True)
+        embed.add_field(name='Value', value=val, inline=True)
+        embed.add_field(name='Rarity', value=rarity, inline=True)
         embed.set_footer(text=footer)
 
         await ctx.send(embed=embed)
@@ -35,9 +35,38 @@ class Events(commands.Cog):
         )
         embed.set_image(url=img),
         if steps != "Null":
-            embed.add_field(name='Instructions', value=steps, inline='True')
+            embed.add_field(name='Instructions', value=steps, inline=True)
         embed.set_footer(text=footer)
 
+        await ctx.send(embed=embed)
+
+    async def embed_chao_list(self, ctx, user, active, chao):
+        await ctx.send("test")
+
+        embed = discord.Embed(
+            title=(""),
+            description="",
+            color=ctx.author.color,
+        )
+        embed.set_thumbnail(url="https://static.wikia.nocookie.net/sonic/images/4/41/Omochao_SR.png")
+        embed.set_author(name=(ctx.author.name + "'s Chao"), icon_url=ctx.author.avatar_url)
+
+        cursor = chao.find({"userid": ctx.author.id})
+        num = 0
+        for s in cursor:
+            id = s.get("_id")
+            name = s.get("name")
+            looks = s.get("looks")
+            color = looks[0]
+            shiny = looks[1]
+            ttone = looks[2]
+            data = s.get("data")
+            grades = s.get("grades")
+            stats = s.get("stats")
+            personality = s.get("personality")
+            num += 1
+            embed.add_field(name="#" + str(num) + ': ' + name, value="**Stats:** " + str(stats[0]) + " Swi / " + str(stats[1]) + " Fly / " + str(stats[2]) + " Pow / " + str(stats[3]) + " Run / " + str(stats[4]) + " Sta"
+                                                                     "\n**Personality:** " + personality + "\n**Color:** " + color.capitalize(), inline=True)
         await ctx.send(embed=embed)
 
     async def embed_shop(self, ctx):
@@ -61,11 +90,11 @@ class Events(commands.Cog):
             value = s.get("val")
             rarity = s.get("rarity")
             if type == "fruit":
-                embed.add_field(name=(str(id) + ': 🍎' + name.capitalize()), value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline="False")
+                embed.add_field(name=(str(id) + ': 🍎' + name.capitalize()), value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline=False)
             elif type == "hat":
-                embed.add_field(name=(str(id) + ': 🎩' + name.capitalize()), value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline="False")
+                embed.add_field(name=(str(id) + ': 🎩' + name.capitalize()), value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline=False)
             else:
-                embed.add_field(name=(str(id) + ': 🥚' + color.capitalize()) + ' egg', value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline="False")
+                embed.add_field(name=(str(id) + ': 🥚' + color.capitalize()) + ' egg', value=("Cost: " + str(value) + ' rings\nRarity:' + rarity), inline=False)
         embed.set_footer(text="Hint: Buy an item with the !buy command and the corresponding ID #. Example: !buy 8")
         await ctx.send(embed=embed)
 

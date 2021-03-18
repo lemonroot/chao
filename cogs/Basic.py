@@ -69,21 +69,23 @@ class Basic(commands.Cog):
         stats = ["S", "A", "B", "C", "D", "E"]
         if src == 'tutorial':
             statdist = choice(stats, 5, p=[0.01, 0.05, 0.14, 0.3, 0.3, 0.2])
-        elif src == 'shop':
+        elif src == 'shop' or 'daily':
             statdist = choice(stats, 5, p=[0.01, 0.05, 0.24, 0.3, 0.2, 0.2])
         return list(statdist)
 
     @commands.command(name='setactive', aliases=['active', 'setchao'])
     async def set_active(self, ctx, arg=None):
-        if not arg:
-            await ctx.send("ERROR: Please specify a chao to set as active, or use **!chaolist** to see all of your chao.")
-        else:
-            chao = db["chao"]
-            users = db["users"]
+        chao = db["chao"]
+        users = db["users"]
+        user = users.find_one({"_id": ctx.author.id})
+        active = user.get("active")
 
-            user = users.find_one({"_id": ctx.author.id})
+        if not arg:
+            event = self.bot.get_cog('Events')
+            if event is not None:
+                await event.embed_chao_list(ctx, user, active, chao)
+        else:
             chaolist = chao.find_one({"userid": ctx.author.id, "name": arg})
-            active = user.get("active")
             if not chaolist:
                 await ctx.send("ERROR: You have no chao with this name!")
             else:
