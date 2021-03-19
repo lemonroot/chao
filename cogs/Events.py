@@ -98,10 +98,7 @@ class Events(commands.Cog):
         embed.set_footer(text="Hint: Buy an item with the !buy command and the corresponding ID #. Example: !buy 8")
         await ctx.send(embed=embed)
 
-    async def embed_profile(self, ctx, name, chaoinst, member: discord.Member = None):
-        member = member or ctx.author
-        bot = self.bot.user
-
+    async def embed_profile(self, ctx, name, chaoinst):
         birth = chaoinst.get("birthday")
         data = chaoinst.get("data")
         age = data[0]
@@ -136,6 +133,41 @@ class Events(commands.Cog):
         embed.add_field(name="Intelligence", value=intstr)
         embed.add_field(name="Hunger Meter", value=(int(hunger) * ":blue_square:" + (5-int(hunger)) *
                                                     ":white_large_square:"), inline=False)
+        await ctx.send(embed=embed)
+
+    async def embed_inv(self, ctx, inv, rings):
+        items = db["items"]
+        cursor = inv.find({"userid": ctx.author.id})
+        embed = discord.Embed(
+            title="",
+            description="",
+            color=ctx.author.color,
+        )
+        embed.set_author(name=(ctx.author.name + "'s Inventory"), icon_url=ctx.author.avatar_url)
+        embed.add_field(name="Rings", value=rings, inline=False)
+        for s in cursor:
+            id = s.get("itemid")
+            name = s.get("name")
+            qua = s.get("quantity")
+            src = s.get("src")
+
+            inst = items.find_one({"_id": int(id)})
+            type = inst.get("type")
+            rarity = inst.get("rarity")
+            color = inst.get("color")
+            value = inst.get("val")
+
+            if src == "shop1" or "shop2":
+                src = "shop"
+
+            if type == "fruit":
+                name = name = ('🍎' + name.capitalize())
+            elif type == "hat":
+                name = name = ('🎩' + name.capitalize())
+            else:
+                name = ('🥚' + color.capitalize()) + ' egg'
+            embed.add_field(name=name, value=("Quantity: " + str(qua) + '\nValue: ' + str(value) + '\nRarity: ' + rarity + '\nSource: ' + src.capitalize()), inline=True)
+
         await ctx.send(embed=embed)
 
 
