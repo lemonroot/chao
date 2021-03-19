@@ -60,7 +60,7 @@ class Basic(commands.Cog):
             person = random.choice(array)
         chao = db["chao"]
         statlist = await self._calc_stats(ctx, src)
-        post = {"userid": ctx.author.id, "name": "Chao", "looks": [color, False, True], "data": [0, 0, 0.0, 5, 0],
+        post = {"userid": ctx.author.id, "name": color.capitalize() + "Chao", "looks": [color, False, True], "data": [0, 0, 0.0, 5, 0],
                 "grades": statlist, "stats": [0, 0, 0, 0, 0, 0, 0],
                 "personality": person, "birthday": datetime.now()}
         chao.insert_one(post)
@@ -73,7 +73,7 @@ class Basic(commands.Cog):
             statdist = choice(stats, 5, p=[0.01, 0.05, 0.24, 0.3, 0.2, 0.2])
         return list(statdist)
 
-    @commands.command(name='setactive', aliases=['active', 'setchao'])
+    @commands.command(name='setactive', aliases=['active', 'setchao', 'list'])
     async def set_active(self, ctx, arg=None):
         chao = db["chao"]
         users = db["users"]
@@ -103,6 +103,17 @@ class Basic(commands.Cog):
         user = users.find_one({"_id": ctx.author.id})
         rings = user.get("rings")
         await ctx.send(ctx.author.mention + ", you currently have " + str(rings) + " rings.")
+
+    @commands.command(name='inv', aliases=['inventory', 'items'])
+    async def inv(self, ctx):
+        users = db["users"]
+        user = users.find_one({"_id": ctx.author.id})
+        inv = db["inventory"]
+        rings = user.get("rings")
+
+        event = self.bot.get_cog('Events')
+        if event is not None:
+            await event.embed_inv(ctx, inv, rings)
 
     @commands.command(name="buy")
     async def buy(self, ctx, arg=None):
