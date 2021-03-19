@@ -198,7 +198,7 @@ class Basic(commands.Cog):
             rewards = read.split('\n')
 
         # Increase daily value
-        users.update_one({"_id": ctx.author.id}, {"$inc": {"daily": daily+1}})
+        users.update_one({"_id": ctx.author.id}, {"$inc": {"daily": 1}})
 
         if daily >= 21:
             users.update_one({"_id": ctx.author.id}, {"$inc": {"rings": 50}})
@@ -281,7 +281,7 @@ class Basic(commands.Cog):
 
         else:
             item = items.find_one({"_id": int(rewards[daily])})
-            test = user.find_one({"itemid": int(rewards[daily])})
+            test = users.find_one({"_id": ctx.author.id, "itemid": int(rewards[daily])})
             if not test:
                 name = item.get("name")
                 val = item.get("val")
