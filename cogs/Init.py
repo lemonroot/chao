@@ -14,6 +14,7 @@ class Init(commands.Cog):
         self.bot = bot
         self._last_member = None
         self.update_shop.start()
+        self.inc_hunger.start()
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -103,6 +104,20 @@ class Init(commands.Cog):
         for s in range(len(itemlist)):
             shop.insert(itemlist[s])
         return itemlist
+
+    @tasks.loop(hours=6)
+    async def inc_hunger(self):
+        chao = db["chao"]
+
+        cursor = chao.find({})
+
+        for s in cursor:
+            data = s.get("data")
+            hunger = data[3]
+            print(data[3])
+            if data[3] != 0:
+                id = s.get("_id")
+                chao.update({"_id": id}, {"$inc": {"data.3": -1}})
 
 
 def setup(bot):
